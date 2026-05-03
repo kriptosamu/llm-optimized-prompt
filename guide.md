@@ -7,10 +7,15 @@ How to inject the optimized prompt into various LLMs and AI editors.
 ## LLMs
 
 ### Claude (Anthropic)
-**Projects:**
+**Web (Claude.ai):**
 1. Go to [claude.ai](https://claude.ai) → Settings → Projects
 2. Create/select project → "Project Instructions"
 3. Paste the prompt
+
+**Claude Code (CLI):**
+1. Create `CLAUDE.md` in project root
+2. Paste prompt content
+3. Claude Code auto-loads it as context
 
 **Direct:**
 - Start new chat with prompt as first message (system context)
@@ -26,6 +31,8 @@ How to inject the optimized prompt into various LLMs and AI editors.
 **Temporary:**
 - Paste prompt as first message, follow with task
 
+**Note:** No native dotfile support; web-only
+
 ---
 
 ### Codex (GitHub Copilot)
@@ -35,10 +42,23 @@ How to inject the optimized prompt into various LLMs and AI editors.
 
 ---
 
+### Codex Editor (GitHub)
+GitHub's agentic coding editor (separate from Copilot in VS Code).
+
+1. Create `codex.md` in project root
+2. Paste prompt content
+3. Codex Editor auto-loads it as system context
+
+**Note:** Distinct from `.github/copilot-instructions.md` — `codex.md` is specific to the Codex Editor environment.
+
+---
+
 ### Gemini (Google)
 **Gems:**
 1. [gemini.google.com](https://gemini.google.com) → Gem Manager → New Gem
 2. "Instructions" field → paste prompt
+
+**Note:** No native dotfile support; web-only
 
 ---
 
@@ -46,11 +66,15 @@ How to inject the optimized prompt into various LLMs and AI editors.
 - Web: Paste prompt as system context in first message
 - API: Include in `system` role message
 
+**Note:** No native dotfile support
+
 ---
 
 ### Qwen (Alibaba)
 - Web chat: Paste as first message
 - API: Use `system` field in request body
+
+**Note:** No native dotfile support
 
 ---
 
@@ -58,11 +82,15 @@ How to inject the optimized prompt into various LLMs and AI editors.
 - Web: [chatglm.cn](https://chatglm.cn) → paste as context-setting message
 - API: Pass in `system` parameter
 
+**Note:** No native dotfile support
+
 ---
 
 ### Kimi (Moonshot)
 - Web: [kimi.moonshot.cn](https://kimi.moonshot.cn)
 - Paste prompt first, then task in same or follow-up message
+
+**Note:** No native dotfile support
 
 ---
 
@@ -100,13 +128,29 @@ How to inject the optimized prompt into various LLMs and AI editors.
 
 ---
 
+## Project Config Files (Dotfiles)
+
+| Editor/Tool | Filename | Location |
+|-------------|----------|----------|
+| **Claude Code** | `CLAUDE.md` | Project root |
+| **Cursor** | `.cursorrules` | Project root |
+| **Windsurf** | `.windsurf/rules.md` | Project root |
+| **Codex Editor** | `codex.md` | Project root |
+| **Copilot/Codex** | `.github/copilot-instructions.md` | `.github/` folder |
+| **Antigravity** | `.antigravity/rules` | Project root |
+
+**Web-only LLMs** (no dotfile support): GPT, Gemini, Deepseek, Qwen, GLM, Kimi
+
+---
+
 ## Quick Reference Table
 
 | Platform | Method | File/Location |
 |----------|--------|---------------|
-| Claude | Project settings | Web UI |
+| Claude | Project settings / `CLAUDE.md` | Web UI / Project root |
 | GPT/Copilot | Custom GPT / Settings | Web UI / `.github/copilot-instructions.md` |
 | Codex | VS Code settings | Settings / `.github/copilot-instructions.md` |
+| Codex Editor | Auto-load | `codex.md` (project root) |
 | Gemini | Gems | Web UI |
 | Deepseek | System message | Web UI / API |
 | Qwen | System message | Web UI / API |
