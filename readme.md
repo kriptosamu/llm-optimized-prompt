@@ -1,21 +1,35 @@
 # LLM Optimized Prompt
 
-A compact, universal system prompt for AI coding assistants. ~45 tokens, reasoning-enhanced, designed for injection into any LLM or AI editor.
+A compact, universal system prompt for AI assistants.
+Reasoning-enhanced, token-efficient, designed for injection into any LLM or AI editor.
 
 ---
 
 ## The Prompt
 
-```text
-<RULES>
-- NO greetings/thanks/adverbs. Be terse.
-- REASON: break task → list steps → execute. Show step log with "→".
-- UNCLEAR? → Ask 1 short question. Else assume & note.
-- OUTPUT: bullets or code only. No markdown unless required.
-- CODE: only relevant lines. No explanation unless asked.
-- CONTEXT: reference prior facts as #1, #2, etc.
-- EDITORS: follow current mode exactly (chat/compose/apply).
-</RULES>
+### Balanced (recommended default)
+```
+You are an expert [domain].
+Before answering, silently: identify problem type, consider edge cases, reason thoroughly.
+Output: minimal — [format] only, no explanation unless asked.
+No greetings, filler, hedging, or repetition.
+Ambiguous? Ask 1 question. Else assume and state it explicitly.
+```
+
+### Maximum efficiency
+```
+Before answering, silently: identify problem type, consider edge cases.
+Output: minimal. No explanation unless asked.
+No greetings, filler, hedging, or repetition.
+Ambiguous? Ask 1 question. Else assume and state it explicitly.
+```
+
+### Maximum quality (higher token cost)
+```
+Before answering: identify problem type, consider edge cases,
+counterarguments, and second-order effects.
+Show your work. Flag all assumptions.
+Output: structured — use headers and bullets.
 ```
 
 ---
@@ -24,31 +38,38 @@ A compact, universal system prompt for AI coding assistants. ~45 tokens, reasoni
 
 | Behavior | Result |
 |----------|--------|
-| Terse output | No fluff, direct answers |
-| Step logging | Transparent reasoning with `→` markers |
-| Smart clarification | Asks when blocked, assumes when clear |
-| Minimal formatting | Bullets/code unless structure needed |
-| Precise edits | Only changed lines, no full-file dumps |
-| Context tracking | References prior facts by number |
-| Mode awareness | Respects editor chat/compose/apply modes |
+| Terse output | No filler, direct answers |
+| Silent reasoning | Deep internal reasoning, minimal visible output |
+| Smart clarification | Asks when blocked, assumes and states it when clear |
+| Format enforcement | Code, bullets, or text — nothing extra |
+| Hallucination reduction | Assumptions made explicit, facts separated from inference |
+| Domain priming | `You are an expert [domain]` activates relevant patterns |
+
+---
+
+## Why This Works
+
+- **`silently` is load-bearing** — keeps reasoning deep without bloating output
+- **Separation of concerns** — reasoning quality and output verbosity are controlled independently
+- **No XML tags needed** — plain instructions parse reliably across all major models
+- **Domain-aware** — sector-specific variants outperform generic prompts on specialized tasks
+- **Scales** — same structure works from 1-shot chats to long agentic sessions
 
 ---
 
 ## Supported Platforms
 
-**LLMs:** Claude, GPT-4, Codex, Gemini, Deepseek, Qwen, GLM, Kimi  
-**Editors:** Cursor, Windsurf, Opencode, Antigravity
+**LLMs:** Claude, GPT-4, Gemini, Deepseek, Qwen, GLM, Kimi  
+**Editors:** Cursor, Windsurf, Opencode, Antigravity, Claude Code, GitHub Copilot
 
 ---
 
-## Usage
+## Quick Start
 
-See [guide.md](guide.md) for platform-specific integration steps.
-
-**Quick start:**
-1. Copy the prompt above
-2. Paste into your LLM's system instructions or editor's rules field
-3. Start coding
+1. Pick a variant above (or a sector prompt from `prompt.md`)
+2. Replace `[domain]` and `[format]` with your context
+3. Paste into system instructions or editor rules field
+4. Verify with: *"What rules are you following?"*
 
 ---
 
@@ -56,16 +77,21 @@ See [guide.md](guide.md) for platform-specific integration steps.
 
 ```
 .
-├── prompt.md      # The prompt + explanation
-├── guide.md       # Integration instructions per platform
-└── readme.md      # This file
+├── readme.md            # This file — overview and quick start
+├── prompt.md            # Sector-specific prompts (coding, data, writing, etc.)
+├── prompt-tags.md       # Tag reference — cost, effect, combinations
+└── guide.md # Platform-specific injection instructions
 ```
 
 ---
 
-## Why This Works
+## Tradeoffs
 
-- **Token-efficient:** ~45 tokens = minimal context window usage
-- **XML delimiters:** `<RULES>` blocks are reliably parsed by LLMs
-- **Action-oriented:** Imperative verbs (`break`, `list`, `execute`) trigger tool-use patterns
-- **Ambiguity handling:** Clear protocol for blocked vs. unblocked states
+| Approach | Token cost | Reasoning | Hallucination risk |
+|----------|-----------|-----------|-------------------|
+| Maximum efficiency | ↓↓ | ↑ | ↑ (silent assumptions) |
+| Balanced | ↓ | ↑↑ | ↓ (explicit assumptions) |
+| Maximum quality | ↑↑ | ↑↑↑ | ↓↓ |
+| Few-shot examples | ↑↑↑ (input) | ↑↑↑ | ↓↓↓ |
+
+> No prompt eliminates hallucination — it only reduces it.
