@@ -39,28 +39,30 @@ Output: structured — use headers and bullets.
 | Behavior | Result |
 |----------|--------|
 | Terse output | No filler, direct answers |
-| Silent reasoning | Deep internal reasoning, minimal visible output |
-| Smart clarification | Asks when blocked, assumes and states it when clear |
+| Silent reasoning | Internal reasoning on standard models, minimal visible output |
+| Smart clarification | Asks when blocked, assumes and **states it** when clear |
 | Format enforcement | Code, bullets, or text — nothing extra |
 | Hallucination reduction | Assumptions made explicit, facts separated from inference |
-| Domain priming | `You are an expert [domain]` activates relevant patterns |
+| Domain priming | `You are an expert [domain]` activates relevant knowledge patterns |
 
 ---
 
 ## Why This Works
 
-- **`silently` is load-bearing** — keeps reasoning deep without bloating output
+- **`silently` controls output verbosity** — keeps reasoning internal without bloating output on standard (non-reasoning) models
 - **Separation of concerns** — reasoning quality and output verbosity are controlled independently
-- **No XML tags needed** — plain instructions parse reliably across all major models
+- **Explicit assumptions** — `state it explicitly` makes silent assumptions visible, reducing hallucination risk
 - **Domain-aware** — sector-specific variants outperform generic prompts on specialized tasks
 - **Scales** — same structure works from 1-shot chats to long agentic sessions
+
+> **On XML tags:** These prompts use plain text, which parses across all major models. For Claude specifically, Anthropic recommends XML tags for complex, structured prompts — consider wrapping sections in XML if targeting Claude exclusively.
 
 ---
 
 ## Supported Platforms
 
-**LLMs:** Claude, GPT-4, Gemini, Deepseek, Qwen, GLM, Kimi  
-**Editors:** Cursor, Windsurf, Opencode, Antigravity, Claude Code, GitHub Copilot
+**LLMs:** Claude, GPT-4, Gemini, Deepseek, Qwen, GLM, Kimi
+**Editors & CLI:** Cursor, Windsurf, Claude Code, GitHub Copilot, Codex CLI, Opencode, Antigravity
 
 ---
 
@@ -68,8 +70,10 @@ Output: structured — use headers and bullets.
 
 1. Pick a variant above (or a sector prompt from `prompt.md`)
 2. Replace `[domain]` and `[format]` with your context
-3. Paste into system instructions or editor rules field
+3. Paste into system instructions or editor rules file (see `guide.md`)
 4. Verify with: *"What rules are you following?"*
+
+> **Reasoning models** (Claude thinking, o1/o3, Gemini thinking): Remove `silently` — these models reason internally by default and the instruction is redundant.
 
 ---
 
@@ -80,7 +84,7 @@ Output: structured — use headers and bullets.
 ├── readme.md            # This file — overview and quick start
 ├── prompt.md            # Sector-specific prompts (coding, data, writing, etc.)
 ├── prompt-tags.md       # Tag reference — cost, effect, combinations
-└── guide.md # Platform-specific injection instructions
+└── guide.md             # Platform-specific injection instructions
 ```
 
 ---
